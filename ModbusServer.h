@@ -18,6 +18,8 @@ public:
     void printVectorDigital(string tipo, vector<bool>);
     void printVectorAnalogico(string tipo, vector<short>);
     vector<byte> peticion(vector<byte> recibido);
+    vector<byte> vector_to_byte(vector<short> vect);
+    bool check_range(short from, short to, short offset, short posiciones);
 
     vector<bool> digital_output;
     vector<bool> digital_input;
