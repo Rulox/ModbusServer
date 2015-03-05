@@ -118,7 +118,7 @@ vector<byte> ModbusServer::peticion(vector<byte> recibido) {
     posiciones = 1;
     if (funcion == 0x01) { // Lectura digital { 0x06, 0x01, 0x00, 0x00, 0x00, 0x01, 0xFC, 0x7D };
         string resultado;    // offset -> desde donde empiezas, Posiciones -> offset+...
-        for (int i = offset; i < posiciones; i++) {
+        for (int i = offset; i < (offset + posiciones); i++) {
             if (this->digital_output[i]) {
                 resultado += "1";
             } else {
