@@ -8,7 +8,7 @@
 using namespace std;
 
 typedef unsigned char byte;
-typedef short int16_t;
+//int16_t;
 
 class ModbusServer {
 
@@ -20,6 +20,8 @@ public:
     vector<byte> peticion(vector<byte> recibido);
     vector<byte> vector_to_byte(vector<short> vect);
     bool check_range(short from, short to, short offset, short posiciones);
+    short bin_to_short(string binario);
+    // Declarar int to bytes y bytes to int
 
     vector<bool> digital_output;
     vector<bool> digital_input;

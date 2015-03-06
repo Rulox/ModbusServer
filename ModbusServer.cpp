@@ -2,6 +2,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <sstream>
+#include <string.h>
 
 #define to_byte(num) dynamic_cast<byte> (num)
 
@@ -110,23 +111,26 @@ ModbusServer::ModbusServer() {
 }
 
 vector<byte> ModbusServer::peticion(vector<byte> recibido) {
+    recibido = { 0x06, 0x01, 0x00, 0x00, 0x00, 0x04, 0xFC, 0x7D };
     byte funcion = recibido[1];
+    vector<byte> peticion = recibido;
 
-    short offset = recibido[2] + recibido[3];
-    short posiciones = recibido[4] + recibido[5];
-    offset = 1;
-    posiciones = 1;
     if (funcion == 0x01) { // Lectura digital { 0x06, 0x01, 0x00, 0x00, 0x00, 0x01, 0xFC, 0x7D };
+        int offset = recibido[3] + (int)(recibido[2] << 8);
+        int posiciones = recibido[5] + (int)(recibido[4] << 8);
+        /*
+        var bytes = new byte[2];
+        bytes[0] = (byte)(input >> 8);  // 0x00
+        bytes[1] = (byte)input;         // 0x10
+         */
+
         string resultado;    // offset -> desde donde empiezas, Posiciones -> offset+...
         for (int i = offset; i < (offset + posiciones); i++) {
-            if (this->digital_output[i]) {
-                resultado += "1";
-            } else {
-                resultado += "0";
-            }
+            resultado += this->digital_output[i] ? "1" : "0";
         }
-        cout << "resultado = " << resultado << endl;
-    } else if (funcion == 0x05) {
+        cout << "resultado (binario) = " << resultado << endl;
+        cout << "resultado (decimal) = " << bin_to_short(resultado) << endl;
+    } else if (funcion == 0x05) {  //{ 0x06, 0x05, 0x00, 0x01, 0xFF, 0x00, 0xDC, 0x4D };
 
     } else if (funcion == 0x0F) {
 
@@ -139,5 +143,13 @@ vector<byte> ModbusServer::peticion(vector<byte> recibido) {
     } else {
         // Return ERROR 01 - Funcion no implementada
     }
+    return peticion;
 }
 
+short ModbusServer::bin_to_short(string binario) {
+    char bin[1024];
+    strcpy(bin, binario.c_str());
+    char * end;
+    long value = strtol (bin, &end, 2);
+    return (short)value;
+}
