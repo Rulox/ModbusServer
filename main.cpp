@@ -5,7 +5,7 @@ using namespace std;
 
 int main() {
 
-    ModbusServer modbus; // Inicializamos
+    ModbusServer modbus(6); // Inicializamos
     modbus.printVectorDigital("Digital Output ->", modbus.digital_output);
     modbus.printVectorDigital("Digital Input ->", modbus.digital_input);
     modbus.printVectorAnalogico("Analog Output -> ", modbus.analog_output);

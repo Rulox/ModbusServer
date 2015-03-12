@@ -13,7 +13,7 @@ typedef unsigned char byte;
 class ModbusServer {
 
 public:
-    ModbusServer();
+    ModbusServer(int id);
 
     void printVectorDigital(string tipo, vector<bool>);
     void printVectorAnalogico(string tipo, vector<short>);
@@ -21,7 +21,13 @@ public:
     vector<byte> vector_to_byte(vector<short> vect);
     bool check_range(short from, short to, short offset, short posiciones);
     short bin_to_short(string binario);
-    // Declarar int to bytes y bytes to int
+    int16_t bytes_to_short(int byte1, int byte2);
+    vector<byte> short_to_bytes(short num);
+    byte short_to_byte(short num);
+    vector<byte>  crc16( vector<byte> mensaje);
+    vector<byte>  crc16( vector<byte> mensaje, int len);
+
+
 
     vector<bool> digital_output;
     vector<bool> digital_input;
